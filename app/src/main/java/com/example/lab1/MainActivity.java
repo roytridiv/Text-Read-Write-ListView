@@ -3,7 +3,10 @@ package com.example.lab1;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.lang.reflect.Array;
@@ -32,10 +35,28 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("ditio item");
     }
 
+    private void setupListViewListerner(){
+        l.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                arrayList.remove(position);
+                arrayAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+    }
+
+
 
     public boolean onCreateOtipnsMenu(Menu menu){
 
         getMenuInflater().inflate(R.menu.todo,menu);
         return true ;
+    }
+
+    public void addToDoItem(View view) {
+        EditText e = findViewById(R.id.newitem);
+        arrayAdapter.add(e.getText().toString());
+        e.setText("");
     }
 }
