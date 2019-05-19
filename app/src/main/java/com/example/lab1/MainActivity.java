@@ -2,6 +2,7 @@ package com.example.lab1;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -27,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     ListView l;
     Button b;
-    private Object View;
+    String itemSave = "" ;
 
 
     @Override
@@ -35,14 +45,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        readItems();
+
+        //ArrayList list = (ArrayList) value.get((String) key[i]);
+
         l = findViewById(R.id.itemList);
         arrayList = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item,arrayList);
+        arrayAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item , arrayList);
 
         l.setAdapter(arrayAdapter);
+
+        //manual data //
+
         arrayList.add("আমার প্রথম আইটেম");
         arrayList.add("দ্বিতীয় item");
+
       //  b = findViewById(R.id.r);
+
+
 
         l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
@@ -108,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
                 arrayList.remove(position);
                 arrayAdapter.notifyDataSetChanged();
+                saveItems();
                 return true;
             }
         });
@@ -122,15 +143,109 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addToDoItem(View view) {
-        EditText e = findViewById(R.id.newitem);
-        if(e.getText().toString().equals("")){
+        EditText editText = findViewById(R.id.newitem);
+        if(editText.getText().toString().equals("")){
             Toast.makeText(MainActivity.this,"PLease Enter Item" , Toast.LENGTH_SHORT).show();
         }else {
-            arrayAdapter.add(e.getText().toString());
-            e.setText("");
+
+            itemSave = editText.getText().toString();
+
+            arrayAdapter.add(editText.getText().toString());
+
+            editText.setText("");
+            saveItems();
             Toast.makeText(MainActivity.this, "Item added", Toast.LENGTH_SHORT).show();
 
 
         }
     }
+
+    ///reading and writing items
+
+
+    private void readItems(){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir , "todo.txt");
+        Log.d("MY_APP_DEBUG" , "items read");
+        try {
+            arrayList = new ArrayList<String>(FileUtils.readLines(todoFile));
+            Toast.makeText(MainActivity.this , " the item is read" , Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            arrayList = new ArrayList<String>();
+            e.printStackTrace();
+
+        }
+    }
+
+    private  void saveItems(){
+        File fileDir = getFilesDir();
+        File todoFile = new File(fileDir , "todo.txt");
+        Toast.makeText(MainActivity.this , " the item is saved" , Toast.LENGTH_SHORT).show();
+        Log.d("MY_APP_DEBUG" , "items save");
+        try {
+            FileUtils.writeLines(todoFile , arrayList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    //alternative saving
+//    public void save(View v){
+//        FileOutputStream fos = null;
+//
+//        try {
+//
+//            fos = openFileOutput("testing.txt",MODE_PRIVATE);
+//
+//            fos.write((itemSave.getBytes()));
+//            Toast.makeText(MainActivity.this, "Saved in a directory", Toast.LENGTH_SHORT).show();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//
+//        } catch (IOException e) {
+//
+//        }finally {
+//            if (fos != null){
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//    }
+////
+//    public void load(View v){
+//
+//        FileInputStream fis = null;
+//        try{
+//            fis = openFileInput("testing.txt");
+//            InputStreamReader isr = new InputStreamReader(fis);
+//            BufferedReader br = new BufferedReader(isr);
+//            StringBuilder sb = new StringBuilder();
+//            String test ;
+//            while ((test = br.readLine()) != null){
+//                sb.append(test).append("\n");
+//
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(fis != null){
+//                try {
+//                    fis.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//
+//    }
+
+
 }
