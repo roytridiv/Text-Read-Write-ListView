@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 inflater.inflate(R.menu.my_context_menu,menu);
 
                 return true;
+
             }
 
             @Override
