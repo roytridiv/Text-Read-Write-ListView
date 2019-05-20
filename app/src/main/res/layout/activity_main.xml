@@ -5,89 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/gg"
-    >
+    android:background="@drawable/gg">
 
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editSection">
+    </ListView>
 
-
-
-
-        <ScrollView
+    <RelativeLayout
+        android:id="@+id/editSection"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp">
+        <EditText
+            android:id="@+id/newitem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+            android:hint="@string/enter_item"
+            android:layout_toLeftOf="@+id/addBtn"
+            android:layout_toStartOf="@+id/addBtn"/>
 
-                    android:orientation="vertical">
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:onClick="addToDoItem"
+            android:text="ADD"
+            android:background="@drawable/new_button"/>
 
-                        <ListView
-                            android:id="@+id/itemList"
-                            android:layout_width="match_parent"
-                            android:layout_height="380dp"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            >
-
-
-                        </ListView>
-
-                        <EditText
-                            android:id="@+id/newitem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/itemList"
-                            android:layout_below="@+id/itemList"
-                            android:layout_marginTop="14dp"
-                            android:ems="10"
-                            android:hint="enter item"
-
-                            />
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below = "@id/newitem"
-                            android:gravity="center"
-                            >
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:weightSum="1">
-
-                                        <Button
-                                            android:layout_width="0dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:onClick="addToDoItem"
-                                            android:text="ADD"
-
-                                            android:background="@drawable/new_button"
-                                            android:layout_marginRight="50dp"
-                                            android:layout_marginLeft="50dp"/>
-
-
-
-                                </LinearLayout>
-                        </RelativeLayout>
-
-
-
-                </LinearLayout>
-
-                
-
-
-        </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
+    </RelativeLayout>
 </RelativeLayout>
